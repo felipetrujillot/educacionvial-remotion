@@ -19,11 +19,6 @@ export const MyAudio = ({
         volume={volume}
         onEndedCapture={() => setActualView("respuesta")}
       />
-      <Audio
-        src={file}
-        volume={volume}
-        onEndedCapture={() => setActualView("respuesta")}
-      />
     </AbsoluteFill>
   );
 };
