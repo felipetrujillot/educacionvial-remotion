@@ -1,48 +1,63 @@
 import "./tailwind.css";
 import { Composition } from "remotion";
-import { EducacionVial, myCompSchema } from "./EducacionVial";
+import { MyVideo } from "./MyVideo";
+import { QuizData } from "./types"; // Import if you created types.ts
 
-// Each <Composition> is an entry in the sidebar!
+// Your quiz data object
+const quizDataItem: QuizData = {
+  introText: "¿Sabes estas señales?",
+  titleText: "¿Sabes qué indica esta señal de tránsito?",
+  alternativas: [
+    {
+      texto: "Dirección obligada",
+      correcta: false,
+    },
+    {
+      texto: "Paso Vértice",
+      correcta: true,
+    },
+    {
+      texto: "Tránsito en ambos sentidos",
+      correcta: false,
+    },
+    /*  {
+      texto: "3",
+      correcta: false,
+    },
+    {
+      texto: "16",
+      correcta: true,
+    }, */
+  ],
+};
+
+// Define the timing (in frames)
+const fps = 30;
+const introDuration = 1 * fps; // 2 seconds
+const questionDuration = 5 * fps; // 5 seconds showing question and answers
+const highlightDuration = 3 * fps; // 3 seconds highlighting the answer
+const endDuration = 3 * fps; // 3 seconds highlighting the answer
+const totalDuration =
+  introDuration + questionDuration + highlightDuration + endDuration;
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        // You can take the "id" to render a video:
-        // npx remotion render src/index.ts <id> out/video.mp4
-        id="EducacionVial"
-        component={EducacionVial}
-        durationInFrames={150}
-        fps={30}
+        id="QuizVideo"
+        component={MyVideo}
+        durationInFrames={totalDuration}
+        fps={fps}
         width={1080}
         height={1920}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
-        schema={myCompSchema}
         defaultProps={{
-          titleText:
-            "¿Un filtro de aire sucio puede aumentar el consumo de combustible en un?",
-
-          alternativas: [
-            {
-              texto: "1%",
-              correcta: true,
-            },
-            {
-              texto: "3%",
-              correcta: true,
-            },
-            {
-              texto: "2%",
-              correcta: true,
-            },
-            {
-              texto: "1.5%",
-              correcta: true,
-            },
-          ],
+          data: quizDataItem,
+          introDuration,
+          questionDuration,
+          highlightDuration,
         }}
       />
+      {/* You could add more compositions here for other questions */}
     </>
   );
 };

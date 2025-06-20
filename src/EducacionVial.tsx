@@ -14,6 +14,7 @@ import { MyAudio } from "./HelloWorld/Audio";
 import { useState } from "react";
 
 export const myCompSchema = z.object({
+  introText: z.string(),
   titleText: z.string(),
   alternativas: z.array(
     z.object({
@@ -24,7 +25,8 @@ export const myCompSchema = z.object({
 });
 
 export const EducacionVial: React.FC<z.infer<typeof myCompSchema>> = ({
-  titleText: propOne,
+  introText,
+  titleText,
   alternativas,
 }) => {
   const frame = useCurrentFrame();
@@ -61,20 +63,22 @@ export const EducacionVial: React.FC<z.infer<typeof myCompSchema>> = ({
           setActualView={setActualView}
         />
 
-        {/* Sequences can shift the time for its children! */}
+        {actualView === "pregunta" ? (
+          <Sequence from={0}>
+            <Title titleText={titleText} />
+          </Sequence>
+        ) : null}
 
-        <Sequence from={0}>
-          <Title titleText={propOne} />
-        </Sequence>
+        {actualView === "respuesta" ? (
+          <Sequence from={0}>
+            <Title titleText={"Respuesta"} />
+          </Sequence>
+        ) : null}
+
         <Sequence from={0}>
           <Alternativas alternativas={alternativas} actualView={actualView} />
-
           <Subtitle />
         </Sequence>
-
-        {/*   {actualView === "respuesta" ? (
-          <MyAudio audio="download (1).mp3" setActualView={setActualView} />
-        ) : null} */}
       </AbsoluteFill>
     </AbsoluteFill>
   );
